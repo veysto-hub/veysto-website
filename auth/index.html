@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<meta name="referrer" content="no-referrer">
+<title>veysto. – In der App öffnen</title>
+<link rel="icon" href="../assets/icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../assets/site.css">
+<style>
+.auth{max-width:460px;margin:8vh auto 0;text-align:left}
+.auth .card{padding:30px}
+.auth h1{font-size:clamp(30px,6vw,40px);margin:10px 0 12px}
+.auth p{color:var(--muted);margin:0 0 22px}
+.auth .btn{width:100%;justify-content:center}
+.auth small{display:block;color:var(--muted);margin-top:16px;font-size:14px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="top"><a class="brand" href="../"><img src="../assets/icon.svg" alt=""><span>veysto<b>.</b></span></a></header>
+<main class="auth">
+ <div class="card">
+  <span class="eyebrow" id="eyebrow">veysto-Konto</span>
+  <h1 id="title">Weiter in der App</h1>
+  <p id="text">Tippe auf den Knopf, um in veysto fortzufahren.</p>
+  <a class="btn primary" id="open" href="#">In veysto öffnen</a>
+  <small id="hint">Öffne diesen Link auf dem Handy, auf dem veysto installiert ist. Der Link gilt nur einmal und läuft nach kurzer Zeit ab.</small>
+ </div>
+</main>
+</div>
+<script>
+{
+  const q = new URLSearchParams(location.search);
+  const th = q.get('token_hash') || '', type = q.get('type') || 'email';
+  const allowed = ['signup', 'email', 'recovery', 'email_change', 'magiclink', 'invite'];
+  const texts = {
+    recovery: ['Passwort', 'Neues Passwort festlegen', 'Tippe auf den Knopf. veysto öffnet sich, und du kannst ein neues Passwort wählen.'],
+    email_change: ['Konto', 'Neue E-Mail-Adresse bestätigen', 'Tippe auf den Knopf, um die neue Adresse in veysto zu bestätigen.'],
+    signup: ['Willkommen', 'E-Mail bestätigen', 'Tippe auf den Knopf. veysto öffnet sich und bestätigt deine E-Mail-Adresse.'],
+    email: ['Willkommen', 'E-Mail bestätigen', 'Tippe auf den Knopf. veysto öffnet sich und bestätigt deine E-Mail-Adresse.']
+  };
+  const t = texts[type] || texts.email;
+  document.getElementById('eyebrow').textContent = t[0];
+  document.getElementById('title').textContent = t[1];
+  document.getElementById('text').textContent = t[2];
+  const btn = document.getElementById('open');
+  if (!th || !/^[A-Za-z0-9_-]+$/.test(th) || !allowed.includes(type)) {
+    document.getElementById('title').textContent = 'Link unvollständig';
+    document.getElementById('text').textContent = 'Dieser Link ist nicht vollständig. Bitte fordere in der App eine neue E-Mail an.';
+    btn.remove();
+  } else {
+    const query = 'token_hash=' + encodeURIComponent(th) + '&type=' + encodeURIComponent(type);
+    const scheme = 'de.zali.kistenfinder.alpha://auth?' + query;
+    const android = /Android/i.test(navigator.userAgent);
+    const intent = 'intent://auth?' + query + '#Intent;scheme=de.zali.kistenfinder.alpha;package=de.zali.kistenfinder.alpha;S.browser_fallback_url=https%3A%2F%2Fveysto.com%2F;end';
+    btn.href = android ? intent : scheme;
+    if (android) setTimeout(() => { location.href = intent; }, 300);
+  }
+}
+</script>
+</body>
+</html>
