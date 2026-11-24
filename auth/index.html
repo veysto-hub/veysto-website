@@ -14,6 +14,7 @@
 .auth h1{font-size:clamp(30px,6vw,40px);margin:10px 0 12px}
 .auth p{color:var(--muted);margin:0 0 22px}
 .auth .btn{width:100%;justify-content:center}
+.auth .alt{display:block;text-align:center;margin-top:14px;font-weight:600}
 .auth small{display:block;color:var(--muted);margin-top:16px;font-size:14px}
 </style>
 </head>
@@ -26,6 +27,7 @@
   <h1 id="title">Weiter in der App</h1>
   <p id="text">Tippe auf den Knopf, um in veysto fortzufahren.</p>
   <a class="btn primary" id="open" href="#">In veysto öffnen</a>
+  <a class="alt" id="alt" href="#" hidden>Klappt nicht? Hier tippen</a>
   <small id="hint">Öffne diesen Link auf dem Handy, auf dem veysto installiert ist. Der Link gilt nur einmal und läuft nach kurzer Zeit ab.</small>
  </div>
 </main>
@@ -46,7 +48,11 @@
   document.getElementById('title').textContent = t[1];
   document.getElementById('text').textContent = t[2];
   const btn = document.getElementById('open');
-  if (!th || !/^[A-Za-z0-9_-]+$/.test(th) || !allowed.includes(type)) {
+  if (q.get('app') === 'missing') {
+    document.getElementById('title').textContent = 'veysto ist nicht installiert';
+    document.getElementById('text').textContent = 'Öffne den Link aus der E-Mail auf dem Handy, auf dem die veysto-App installiert ist.';
+    btn.remove();
+  } else if (!th || !/^[A-Za-z0-9_-]+$/.test(th) || !allowed.includes(type)) {
     document.getElementById('title').textContent = 'Link unvollständig';
     document.getElementById('text').textContent = 'Dieser Link ist nicht vollständig. Bitte fordere in der App eine neue E-Mail an.';
     btn.remove();
@@ -54,9 +60,9 @@
     const query = 'token_hash=' + encodeURIComponent(th) + '&type=' + encodeURIComponent(type);
     const scheme = 'de.zali.kistenfinder.alpha://auth?' + query;
     const android = /Android/i.test(navigator.userAgent);
-    const intent = 'intent://auth?' + query + '#Intent;scheme=de.zali.kistenfinder.alpha;package=de.zali.kistenfinder.alpha;S.browser_fallback_url=https%3A%2F%2Fveysto.com%2F;end';
+    const intent = 'intent://auth?' + query + '#Intent;scheme=de.zali.kistenfinder.alpha;package=de.zali.kistenfinder.alpha;S.browser_fallback_url=https%3A%2F%2Fveysto.com%2Fauth%2F%3Fapp%3Dmissing;end';
     btn.href = android ? intent : scheme;
-    if (android) setTimeout(() => { location.href = intent; }, 300);
+    const alt = document.getElementById('alt'); alt.href = scheme; if (android) alt.hidden = false;
   }
 }
 </script>
