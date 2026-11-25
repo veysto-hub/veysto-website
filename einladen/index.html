@@ -49,6 +49,7 @@
   } else {
     const scheme = 'de.zali.kistenfinder.alpha://auth?invite=' + t;
     const android = /Android/i.test(navigator.userAgent);
+    if (!android) { document.getElementById('text').textContent = 'veysto gibt es bisher nur als Test-App für Android. Eine iPhone-Version ist geplant – öffne die Einladung bis dahin auf einem Android-Handy.'; btn.remove(); alt.remove(); }
     const intent = 'intent://auth?invite=' + t + '#Intent;scheme=de.zali.kistenfinder.alpha;package=de.zali.kistenfinder.alpha;S.browser_fallback_url=https%3A%2F%2Fveysto.com%2Feinladen%2F%3Fapp%3Dmissing;end';
     btn.href = android ? intent : scheme;
     alt.href = scheme; if (android) alt.hidden = false;

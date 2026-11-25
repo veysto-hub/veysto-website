@@ -60,9 +60,10 @@
     const query = 'token_hash=' + encodeURIComponent(th) + '&type=' + encodeURIComponent(type);
     const scheme = 'de.zali.kistenfinder.alpha://auth?' + query;
     const android = /Android/i.test(navigator.userAgent);
+    if (!android) { document.getElementById('text').textContent = 'veysto gibt es bisher nur als Test-App für Android. Öffne diesen Link auf dem Android-Handy, auf dem veysto installiert ist.'; btn.remove(); document.getElementById('alt').remove(); }
     const intent = 'intent://auth?' + query + '#Intent;scheme=de.zali.kistenfinder.alpha;package=de.zali.kistenfinder.alpha;S.browser_fallback_url=https%3A%2F%2Fveysto.com%2Fauth%2F%3Fapp%3Dmissing;end';
     btn.href = android ? intent : scheme;
-    const alt = document.getElementById('alt'); alt.href = scheme; if (android) alt.hidden = false;
+    const alt = document.getElementById('alt'); if (alt) { alt.href = scheme; alt.hidden = !android; }
   }
 }
 </script>
