@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<meta name="referrer" content="no-referrer">
+<meta property="og:title" content="Einladung in einen veysto-Haushalt">
+<meta property="og:description" content="Tritt dem gemeinsamen Haushalt bei und seht zusammen, was in welcher Kiste ist.">
+<title>veysto. – Einladung in einen Haushalt</title>
+<link rel="icon" href="../assets/icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../assets/site.css">
+<style>
+.auth{max-width:460px;margin:8vh auto 0;text-align:left}
+.auth .card{padding:30px}
+.auth h1{font-size:clamp(30px,6vw,40px);margin:10px 0 12px}
+.auth p{color:var(--muted);margin:0 0 22px}
+.auth .btn{width:100%;justify-content:center}
+.auth .alt{display:block;text-align:center;margin-top:14px;font-weight:600}
+.auth small{display:block;color:var(--muted);margin-top:16px;font-size:14px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="top"><a class="brand" href="../"><img src="../assets/icon.svg" alt=""><span>veysto<b>.</b></span></a></header>
+<main class="auth">
+ <div class="card">
+  <span class="eyebrow">Einladung</span>
+  <h1 id="title">Komm in unseren Haushalt</h1>
+  <p id="text">Du wurdest in einen gemeinsamen veysto-Haushalt eingeladen. Tippe auf den Knopf, melde dich in der App an und tritt bei – danach seht ihr alle denselben Bestand.</p>
+  <a class="btn primary" id="open" href="#">In veysto öffnen</a>
+  <a class="alt" id="alt" href="#" hidden>Klappt nicht? Hier tippen</a>
+  <small id="hint">veysto ist gerade in der Testphase für Android. Noch keine App? Schreib an <a href="mailto:kontakt@veysto.com?subject=Android-Alpha">kontakt@veysto.com</a>.</small>
+ </div>
+</main>
+</div>
+<script>
+{
+  const q = new URLSearchParams(location.search), t = q.get('t') || '';
+  const btn = document.getElementById('open'), alt = document.getElementById('alt');
+  if (q.get('app') === 'missing') {
+    document.getElementById('title').textContent = 'veysto ist nicht installiert';
+    document.getElementById('text').textContent = 'Um dem Haushalt beizutreten, brauchst du die veysto-App auf deinem Android-Handy. Öffne die Einladung danach noch einmal.';
+    btn.remove();
+  } else if (!/^[a-f0-9]{64}$/.test(t)) {
+    document.getElementById('title').textContent = 'Einladung unvollständig';
+    document.getElementById('text').textContent = 'Dieser Einladungslink ist nicht vollständig. Bitte lass dir den Link noch einmal schicken.';
+    btn.remove();
+  } else {
+    const scheme = 'de.zali.kistenfinder.alpha://auth?invite=' + t;
+    const android = /Android/i.test(navigator.userAgent);
+    const intent = 'intent://auth?invite=' + t + '#Intent;scheme=de.zali.kistenfinder.alpha;package=de.zali.kistenfinder.alpha;S.browser_fallback_url=https%3A%2F%2Fveysto.com%2Feinladen%2F%3Fapp%3Dmissing;end';
+    btn.href = android ? intent : scheme;
+    alt.href = scheme; if (android) alt.hidden = false;
+  }
+}
+</script>
+</body>
+</html>
