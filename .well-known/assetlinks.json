@@ -1,0 +1,14 @@
+[
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls"
+    ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.veysto.app",
+      "sha256_cert_fingerprints": [
+        "9B:F7:D4:EE:A0:D0:28:C3:8B:29:C1:5C:C5:40:47:C4:58:AE:03:1F:9B:7C:FB:94:A2:DB:2A:26:FF:43:01:9A"
+      ]
+    }
+  }
+]
