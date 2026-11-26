@@ -7,7 +7,8 @@
       "namespace": "android_app",
       "package_name": "com.veysto.app",
       "sha256_cert_fingerprints": [
-        "9B:F7:D4:EE:A0:D0:28:C3:8B:29:C1:5C:C5:40:47:C4:58:AE:03:1F:9B:7C:FB:94:A2:DB:2A:26:FF:43:01:9A"
+        "9B:F7:D4:EE:A0:D0:28:C3:8B:29:C1:5C:C5:40:47:C4:58:AE:03:1F:9B:7C:FB:94:A2:DB:2A:26:FF:43:01:9A",
+        "B7:DF:1B:6B:C6:2C:F4:46:59:0E:10:C0:77:A6:20:D4:F1:69:2B:F6:53:FD:80:E8:98:2E:79:3E:43:09:22:1A"
       ]
     }
   }
